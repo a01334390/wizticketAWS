@@ -1,0 +1,19 @@
+{
+    "wizticket": {
+        "awscloudformation": {
+            "AuthRoleName": "wizticketaws-20190302235021-authRole",
+            "UnauthRoleArn": "arn:aws:iam::177947607344:role/wizticketaws-20190302235021-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::177947607344:role/wizticketaws-20190302235021-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "wizticketaws-20190302235021-deployment",
+            "UnauthRoleName": "wizticketaws-20190302235021-unauthRole",
+            "StackName": "wizticketaws-20190302235021",
+            "StackId": "arn:aws:cloudformation:us-east-1:177947607344:stack/wizticketaws-20190302235021/3c2a8460-3d78-11e9-8d98-0a00a1b75a8c"
+        },
+        "categories": {
+            "auth": {
+                "cognito647fb807": {}
+            }
+        }
+    }
+}

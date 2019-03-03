@@ -1,0 +1,66 @@
+type Place
+  @model
+  @searchable {
+    id: ID!
+    name: String!
+    description: String!
+    bookingCost: Float
+    address: Address!
+    wizevents : [WizEvent] @connection(name:"PlaceEvent")
+    pictures: [S3Object]
+  }
+
+type WizEvent
+  @model
+  @searchable {
+    id: ID!
+    name: String!
+    description: String!
+    createdAt: String!
+    owner: String
+    validUntil: String!
+    place: Place @connection(name: "PlaceEvent")
+    tickets: [Ticket] @connection(name:"EventTicket",sortField:"category")
+    pictures: [S3Object]
+    seatingConfiguration: [seatingConfiguration]
+  }
+
+type User @model{
+  id: ID!
+  username: String!
+  email: String!
+  registered: Boolean
+  group: String
+  tickets: [Ticket] @connection(name:"UserTicket")
+}
+
+type Ticket
+  @model
+  @searchable {
+    id: ID!
+    wizevent: WizEvent @connection(name:"EventTicket")
+    category: String!
+    seat: Int!
+    value: Float!
+    owner: User @connection(name:"UserTicket")
+  }
+
+type seatingConfiguration {
+  category: String
+  pricing: Float
+
+}
+
+type S3Object {
+  bucket: String!
+  region: String!
+  key: String!
+}
+
+type Address {
+  city: String!
+  country: String!
+  address_line1: String!
+  address_state: String!
+  address_zip: String!
+}
