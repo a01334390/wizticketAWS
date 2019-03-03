@@ -1,0 +1,16 @@
+projects:
+  wizticketaws:
+    schemaPath: src/graphql/schema.json
+    includes:
+      - src/graphql/**/*.js
+    excludes:
+      - ./amplify/**
+    extensions:
+      amplify:
+        codeGenTarget: javascript
+        generatedFileName: ''
+        docsFilePath: src/graphql
+        graphQLApiId: svk6lgknx5ftjgs2ttw6cb7u4u
+      endpoints:
+        prod: >-
+          https://kqc47hzkojhlbekryn7jk5ecni.appsync-api.us-east-1.amazonaws.com/graphql
