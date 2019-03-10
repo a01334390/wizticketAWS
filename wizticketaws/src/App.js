@@ -10,6 +10,9 @@ import ProfilePage from './pages/ProfilePage'
 import PlacePage from './pages/PlacePage'
 import NavBar from './components/NavBar'
 
+/* Context */
+export const UserContext = React.createContext()
+
 const theme = {
   ...AmplifyTheme,
   navBar: {
@@ -75,20 +78,22 @@ class App extends Component {
   render() {
     const { user } = this.state
     return !user ? (<Authenticator theme={theme} />) : (
-      <Router>
-        <>
-          {/** Navigation Bar */}
-          <NavBar user={user} handleSignout={this.handleSignout} />
-          {/** Application Routes */}
-          <div className="app-container">
-            <Route exact path="/" component={HomePage} />
-            <Route path="/profile" component={ProfilePage} />
-            <Route path="/place/:placeId" component={
-              ({ match }) => <PlacePage placeId={match.params.placeId} />
-            } />
-          </div>
-        </>
-      </Router>)
+      <UserContext.Provider value={{user}}>
+        <Router>
+          <>
+            {/** Navigation Bar */}
+            <NavBar user={user} handleSignout={this.handleSignout} />
+            {/** Application Routes */}
+            <div className="app-container">
+              <Route exact path="/" component={HomePage} />
+              <Route path="/profile" component={ProfilePage} />
+              <Route path="/place/:placeId" component={
+                ({ match }) => <PlacePage placeId={match.params.placeId} />
+              } />
+            </div>
+          </>
+        </Router>
+      </UserContext.Provider>)
   }
 }
 
