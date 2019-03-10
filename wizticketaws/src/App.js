@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import { Authenticator, AmplifyTheme } from 'aws-amplify-react'
+import {BrowserRouter as Router, Route} from 'react-router-dom'
 import { Auth, Hub } from 'aws-amplify'
 import './App.css';
+
+/* Pages and components */
+import HomePage from './pages/HomePage'
+import ProfilePage from './pages/ProfilePage'
+import PlacePage from './pages/PlacePage'
 
 const theme = {
   ...AmplifyTheme,
@@ -59,8 +65,19 @@ class App extends Component {
 
   render() {
     const { user } = this.state
-    return !user ? (<Authenticator theme={theme} />) : <div>App</div>
-
+    return !user ? (<Authenticator theme={theme} />) : (
+    <Router>
+      <>
+      {/** Application Routes */}
+      <div className="app-container">
+        <Route exact path="/" component={HomePage}/>
+        <Route path="/profile" component={ProfilePage}/>
+        <Route path="/place/:placeId" component={
+          ({match}) => <PlacePage placeId={match.params.placeId}/>
+        }/>
+      </div>
+      </>
+    </Router>)
   }
 }
 
