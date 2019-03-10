@@ -4,7 +4,8 @@ class PlacePage extends React.Component {
   state = {};
 
   render() {
-    return <div>PlacePage {this.props.placeId}</div>;
+    return (
+	<div> PlacePage</div>)
   }
 }
 
