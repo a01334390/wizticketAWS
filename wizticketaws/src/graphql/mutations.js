@@ -14,6 +14,12 @@ export const createPlace = `mutation CreatePlace($input: CreatePlaceInput!) {
       address_state
       address_zip
     }
+    seatingConfiguration {
+      category
+      capacity
+      pricing
+    }
+    owner
     wizevents {
       items {
         id
@@ -46,6 +52,12 @@ export const updatePlace = `mutation UpdatePlace($input: UpdatePlaceInput!) {
       address_state
       address_zip
     }
+    seatingConfiguration {
+      category
+      capacity
+      pricing
+    }
+    owner
     wizevents {
       items {
         id
@@ -78,6 +90,12 @@ export const deletePlace = `mutation DeletePlace($input: DeletePlaceInput!) {
       address_state
       address_zip
     }
+    seatingConfiguration {
+      category
+      capacity
+      pricing
+    }
+    owner
     wizevents {
       items {
         id
@@ -117,6 +135,12 @@ export const createWizEvent = `mutation CreateWizEvent($input: CreateWizEventInp
         address_state
         address_zip
       }
+      seatingConfiguration {
+        category
+        capacity
+        pricing
+      }
+      owner
       wizevents {
         nextToken
       }
@@ -139,10 +163,6 @@ export const createWizEvent = `mutation CreateWizEvent($input: CreateWizEventInp
       bucket
       region
       key
-    }
-    seatingConfiguration {
-      category
-      pricing
     }
   }
 }
@@ -167,6 +187,12 @@ export const updateWizEvent = `mutation UpdateWizEvent($input: UpdateWizEventInp
         address_state
         address_zip
       }
+      seatingConfiguration {
+        category
+        capacity
+        pricing
+      }
+      owner
       wizevents {
         nextToken
       }
@@ -189,10 +215,6 @@ export const updateWizEvent = `mutation UpdateWizEvent($input: UpdateWizEventInp
       bucket
       region
       key
-    }
-    seatingConfiguration {
-      category
-      pricing
     }
   }
 }
@@ -217,6 +239,12 @@ export const deleteWizEvent = `mutation DeleteWizEvent($input: DeleteWizEventInp
         address_state
         address_zip
       }
+      seatingConfiguration {
+        category
+        capacity
+        pricing
+      }
+      owner
       wizevents {
         nextToken
       }
@@ -239,10 +267,6 @@ export const deleteWizEvent = `mutation DeleteWizEvent($input: DeleteWizEventInp
       bucket
       region
       key
-    }
-    seatingConfiguration {
-      category
-      pricing
     }
   }
 }
@@ -319,6 +343,7 @@ export const createTicket = `mutation CreateTicket($input: CreateTicketInput!) {
         name
         description
         bookingCost
+        owner
       }
       tickets {
         nextToken
@@ -327,10 +352,6 @@ export const createTicket = `mutation CreateTicket($input: CreateTicketInput!) {
         bucket
         region
         key
-      }
-      seatingConfiguration {
-        category
-        pricing
       }
     }
     category
@@ -364,6 +385,7 @@ export const updateTicket = `mutation UpdateTicket($input: UpdateTicketInput!) {
         name
         description
         bookingCost
+        owner
       }
       tickets {
         nextToken
@@ -372,10 +394,6 @@ export const updateTicket = `mutation UpdateTicket($input: UpdateTicketInput!) {
         bucket
         region
         key
-      }
-      seatingConfiguration {
-        category
-        pricing
       }
     }
     category
@@ -409,6 +427,7 @@ export const deleteTicket = `mutation DeleteTicket($input: DeleteTicketInput!) {
         name
         description
         bookingCost
+        owner
       }
       tickets {
         nextToken
@@ -417,10 +436,6 @@ export const deleteTicket = `mutation DeleteTicket($input: DeleteTicketInput!) {
         bucket
         region
         key
-      }
-      seatingConfiguration {
-        category
-        pricing
       }
     }
     category

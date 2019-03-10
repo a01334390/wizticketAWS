@@ -14,6 +14,12 @@ export const onCreatePlace = `subscription OnCreatePlace {
       address_state
       address_zip
     }
+    seatingConfiguration {
+      category
+      capacity
+      pricing
+    }
+    owner
     wizevents {
       items {
         id
@@ -46,6 +52,12 @@ export const onUpdatePlace = `subscription OnUpdatePlace {
       address_state
       address_zip
     }
+    seatingConfiguration {
+      category
+      capacity
+      pricing
+    }
+    owner
     wizevents {
       items {
         id
@@ -78,6 +90,12 @@ export const onDeletePlace = `subscription OnDeletePlace {
       address_state
       address_zip
     }
+    seatingConfiguration {
+      category
+      capacity
+      pricing
+    }
+    owner
     wizevents {
       items {
         id
@@ -117,6 +135,12 @@ export const onCreateWizEvent = `subscription OnCreateWizEvent {
         address_state
         address_zip
       }
+      seatingConfiguration {
+        category
+        capacity
+        pricing
+      }
+      owner
       wizevents {
         nextToken
       }
@@ -139,10 +163,6 @@ export const onCreateWizEvent = `subscription OnCreateWizEvent {
       bucket
       region
       key
-    }
-    seatingConfiguration {
-      category
-      pricing
     }
   }
 }
@@ -167,6 +187,12 @@ export const onUpdateWizEvent = `subscription OnUpdateWizEvent {
         address_state
         address_zip
       }
+      seatingConfiguration {
+        category
+        capacity
+        pricing
+      }
+      owner
       wizevents {
         nextToken
       }
@@ -189,10 +215,6 @@ export const onUpdateWizEvent = `subscription OnUpdateWizEvent {
       bucket
       region
       key
-    }
-    seatingConfiguration {
-      category
-      pricing
     }
   }
 }
@@ -217,6 +239,12 @@ export const onDeleteWizEvent = `subscription OnDeleteWizEvent {
         address_state
         address_zip
       }
+      seatingConfiguration {
+        category
+        capacity
+        pricing
+      }
+      owner
       wizevents {
         nextToken
       }
@@ -239,10 +267,6 @@ export const onDeleteWizEvent = `subscription OnDeleteWizEvent {
       bucket
       region
       key
-    }
-    seatingConfiguration {
-      category
-      pricing
     }
   }
 }
@@ -319,6 +343,7 @@ export const onCreateTicket = `subscription OnCreateTicket {
         name
         description
         bookingCost
+        owner
       }
       tickets {
         nextToken
@@ -327,10 +352,6 @@ export const onCreateTicket = `subscription OnCreateTicket {
         bucket
         region
         key
-      }
-      seatingConfiguration {
-        category
-        pricing
       }
     }
     category
@@ -364,6 +385,7 @@ export const onUpdateTicket = `subscription OnUpdateTicket {
         name
         description
         bookingCost
+        owner
       }
       tickets {
         nextToken
@@ -372,10 +394,6 @@ export const onUpdateTicket = `subscription OnUpdateTicket {
         bucket
         region
         key
-      }
-      seatingConfiguration {
-        category
-        pricing
       }
     }
     category
@@ -409,6 +427,7 @@ export const onDeleteTicket = `subscription OnDeleteTicket {
         name
         description
         bookingCost
+        owner
       }
       tickets {
         nextToken
@@ -417,10 +436,6 @@ export const onDeleteTicket = `subscription OnDeleteTicket {
         bucket
         region
         key
-      }
-      seatingConfiguration {
-        category
-        pricing
       }
     }
     category

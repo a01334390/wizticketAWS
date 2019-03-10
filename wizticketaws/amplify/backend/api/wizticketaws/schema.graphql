@@ -6,6 +6,8 @@ type Place
     description: String!
     bookingCost: Float
     address: Address!
+    seatingConfiguration: [seatingConfiguration]
+    owner: String
     wizevents : [WizEvent] @connection(name:"PlaceEvent")
     pictures: [S3Object]
   }
@@ -22,7 +24,6 @@ type WizEvent
     place: Place @connection(name: "PlaceEvent")
     tickets: [Ticket] @connection(name:"EventTicket",sortField:"category")
     pictures: [S3Object]
-    seatingConfiguration: [seatingConfiguration]
   }
 
 type User @model{
@@ -47,6 +48,7 @@ type Ticket
 
 type seatingConfiguration {
   category: String
+  capacity: Float
   pricing: Float
 
 }

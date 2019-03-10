@@ -14,6 +14,12 @@ export const getPlace = `query GetPlace($id: ID!) {
       address_state
       address_zip
     }
+    seatingConfiguration {
+      category
+      capacity
+      pricing
+    }
+    owner
     wizevents {
       items {
         id
@@ -51,6 +57,12 @@ export const listPlaces = `query ListPlaces(
         address_state
         address_zip
       }
+      seatingConfiguration {
+        category
+        capacity
+        pricing
+      }
+      owner
       wizevents {
         nextToken
       }
@@ -84,6 +96,12 @@ export const getWizEvent = `query GetWizEvent($id: ID!) {
         address_state
         address_zip
       }
+      seatingConfiguration {
+        category
+        capacity
+        pricing
+      }
+      owner
       wizevents {
         nextToken
       }
@@ -107,10 +125,6 @@ export const getWizEvent = `query GetWizEvent($id: ID!) {
       region
       key
     }
-    seatingConfiguration {
-      category
-      pricing
-    }
   }
 }
 `;
@@ -132,6 +146,7 @@ export const listWizEvents = `query ListWizEvents(
         name
         description
         bookingCost
+        owner
       }
       tickets {
         nextToken
@@ -140,10 +155,6 @@ export const listWizEvents = `query ListWizEvents(
         bucket
         region
         key
-      }
-      seatingConfiguration {
-        category
-        pricing
       }
     }
     nextToken
@@ -204,6 +215,7 @@ export const getTicket = `query GetTicket($id: ID!) {
         name
         description
         bookingCost
+        owner
       }
       tickets {
         nextToken
@@ -212,10 +224,6 @@ export const getTicket = `query GetTicket($id: ID!) {
         bucket
         region
         key
-      }
-      seatingConfiguration {
-        category
-        pricing
       }
     }
     category
@@ -289,6 +297,12 @@ export const searchPlaces = `query SearchPlaces(
         address_state
         address_zip
       }
+      seatingConfiguration {
+        category
+        capacity
+        pricing
+      }
+      owner
       wizevents {
         nextToken
       }
@@ -326,6 +340,7 @@ export const searchWizEvents = `query SearchWizEvents(
         name
         description
         bookingCost
+        owner
       }
       tickets {
         nextToken
@@ -334,10 +349,6 @@ export const searchWizEvents = `query SearchWizEvents(
         bucket
         region
         key
-      }
-      seatingConfiguration {
-        category
-        pricing
       }
     }
     nextToken
