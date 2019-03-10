@@ -1,0 +1,20 @@
+{
+    "appName": "wizticketaws",
+    "roleName": "pinpointLambdaRole867aa91d",
+    "cloudWatchPolicyName": "cloudWatchPolicy867aa91d",
+    "pinpointPolicyName": "pinpointPolicy867aa91d",
+    "authPolicyName": "pinpoint_amplify_867aa91d",
+    "unauthPolicyName": "pinpoint_amplify_867aa91d",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    }
+}
