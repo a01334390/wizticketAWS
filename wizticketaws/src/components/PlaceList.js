@@ -5,13 +5,27 @@ import { Link } from 'react-router-dom'
 import { graphqlOperation } from 'aws-amplify'
 import { Connect } from 'aws-amplify-react'
 import { listPlaces } from '../graphql/queries'
-
+/* GraphQL subscription */
+import {onCreatePlace} from '../graphql/subscriptions'
 /* Import others */
 import Error from './Error'
 
 const PlaceList = () => {
+
+	const onNewPlace = (prevQuery,newData) => {
+		let updatedQuery = {...prevQuery}
+		const updatedMarketList = [
+			newData.onCreatePlace,
+			...prevQuery.listPlaces.items
+		]
+		updatedQuery.listPlaces.items = updatedMarketList
+		return updatedQuery
+	}
+
 	return (
-		<Connect query={graphqlOperation(listPlaces)}>
+		<Connect subscription={graphqlOperation(onCreatePlace)}
+				 onSubscriptionMsg = {onNewPlace}
+				 query={graphqlOperation(listPlaces)}>
 			{({ data, loading, errors }) => {
 				if (errors.length > 0) {
 					return <Error errors={errors} />
