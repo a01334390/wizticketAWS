@@ -10,6 +10,9 @@ import ProfilePage from './pages/ProfilePage'
 import PlacePage from './pages/PlacePage'
 import NavBar from './components/NavBar'
 
+/* Artist Components and Pages */
+import ArtistPage from './pages/ArtistPage'
+
 /* Context */
 export const UserContext = React.createContext()
 
@@ -83,13 +86,18 @@ class App extends Component {
           <>
             {/** Navigation Bar */}
             <NavBar user={user} handleSignout={this.handleSignout} />
-            {/** Application Routes */}
+            {/** Event Place Owner Routes */}
             <div className="app-container">
               <Route exact path="/" component={HomePage} />
               <Route path="/profile" component={ProfilePage} />
               <Route path="/place/:placeId" component={
                 ({ match }) => <PlacePage user={user} placeId={match.params.placeId} />
               } />
+              <Route exact path="/artist" component={ArtistPage}/>
+              {/* <Route path="/event/:eventId" component={
+                ({ match }) => <EventPage user={user} eventId={match.params.eventId} />
+              } */}
+              />
             </div>
           </>
         </Router>
