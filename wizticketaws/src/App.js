@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Authenticator, AmplifyTheme } from 'aws-amplify-react'
-import {BrowserRouter as Router, Route} from 'react-router-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { Auth, Hub } from 'aws-amplify'
 import './App.css';
 
@@ -8,6 +8,7 @@ import './App.css';
 import HomePage from './pages/HomePage'
 import ProfilePage from './pages/ProfilePage'
 import PlacePage from './pages/PlacePage'
+import NavBar from './components/NavBar'
 
 const theme = {
   ...AmplifyTheme,
@@ -44,6 +45,14 @@ class App extends Component {
     user ? this.setState({ user }) : this.setState({ user: null })
   }
 
+  handleSignout = async () => {
+    try {
+      await Auth.signOut()
+    } catch (err) {
+      console.error("Error signing out user", err)
+    }
+  }
+
   onHubCapsule = capsule => {
     switch (capsule.payload.event) {
       case "signIn":
@@ -66,18 +75,20 @@ class App extends Component {
   render() {
     const { user } = this.state
     return !user ? (<Authenticator theme={theme} />) : (
-    <Router>
-      <>
-      {/** Application Routes */}
-      <div className="app-container">
-        <Route exact path="/" component={HomePage}/>
-        <Route path="/profile" component={ProfilePage}/>
-        <Route path="/place/:placeId" component={
-          ({match}) => <PlacePage placeId={match.params.placeId}/>
-        }/>
-      </div>
-      </>
-    </Router>)
+      <Router>
+        <>
+          {/** Navigation Bar */}
+          <NavBar user={user} handleSignout={this.handleSignout} />
+          {/** Application Routes */}
+          <div className="app-container">
+            <Route exact path="/" component={HomePage} />
+            <Route path="/profile" component={ProfilePage} />
+            <Route path="/place/:placeId" component={
+              ({ match }) => <PlacePage placeId={match.params.placeId} />
+            } />
+          </div>
+        </>
+      </Router>)
   }
 }
 

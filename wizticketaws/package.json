@@ -5,6 +5,8 @@
   "dependencies": {
     "aws-amplify": "^1.1.19",
     "aws-amplify-react": "^2.3.0",
+    "element-react": "^1.4.25",
+    "element-theme-default": "^1.4.13",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-scripts": "2.1.5"
