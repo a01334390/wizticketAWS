@@ -88,7 +88,7 @@ class App extends Component {
               <Route exact path="/" component={HomePage} />
               <Route path="/profile" component={ProfilePage} />
               <Route path="/place/:placeId" component={
-                ({ match }) => <PlacePage placeId={match.params.placeId} />
+                ({ match }) => <PlacePage user={user} placeId={match.params.placeId} />
               } />
             </div>
           </>
