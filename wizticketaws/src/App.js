@@ -1,7 +1,27 @@
 import React, { Component } from 'react';
-import { withAuthenticator } from 'aws-amplify-react'
+import { withAuthenticator,AmplifyTheme } from 'aws-amplify-react'
 import logo from './logo.svg';
 import './App.css';
+
+const theme = {
+  ...AmplifyTheme,
+  navBar: {
+    ...AmplifyTheme.navBar,
+    backgroundColor: "#ffc0b"
+  },
+  button: {
+    ...AmplifyTheme.button,
+    backgroundColor: "var(--amazonOrange)"
+  },
+  sectionBody: {
+    ...AmplifyTheme.sectionBody,
+    padding: "5px"
+  }, 
+  sectionHeader: {
+    ...AmplifyTheme.sectionHeader,
+    backgroundColor: "var(--squidInk)"
+  }
+}
 
 class App extends Component {
   render() {
