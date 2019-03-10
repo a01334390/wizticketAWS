@@ -77,12 +77,32 @@ class NewPlace extends React.Component {
 	render() {
 		return (
 			<UserContext.Consumer>
-				{({user})=> <>
+				{({ user }) => <>
 					<div className="market-header">
 						<h1 className="market-title">
 							Create your Event Place
 				<Button type="text" icon="edit" className="market-title-button" onClick={() => this.setState({ addPlaceDialog: true })} />
 						</h1>
+						{/** Elastic Search */}
+						<Form inline={true} onSubmit={this.props.handleSearch}>
+							<Form.Item>
+								<Input 
+									placeholder="Search Places..." 
+									icon="circle-cross" 
+									onIconClick={this.props.handleClearSearch}
+									onChange={this.props.handleSearchChange} 
+									value={this.props.searchTerm}/>
+							</Form.Item>
+							<Form.Item>
+								<Button 
+									type="info" 
+									icon="search" 
+									onClick={this.props.handleSearch}
+									loading={this.props.isSearching}>
+									Search
+							</Button>
+							</Form.Item>
+						</Form>
 					</div>
 					{/** Creation Dialog */}
 					<Dialog title="Create New Event Place" visible={this.state.addPlaceDialog} onCancel={() => this.setState({ addPlaceDialog: false })} size="large" customClass="dialog">
@@ -128,7 +148,7 @@ class NewPlace extends React.Component {
 							<Button onClick={() => this.setState({ addPlaceDialog: false })}>
 								Cancel
 				</Button>
-							<Button type="primary" disabled={!this.state.name && !this.state.description && !this.state.bookingCost} onClick={()=>this.handleAddPlace(user)}>
+							<Button type="primary" disabled={!this.state.name && !this.state.description && !this.state.bookingCost} onClick={() => this.handleAddPlace(user)}>
 								Add
 				</Button>
 						</Dialog.Footer>

@@ -10,7 +10,7 @@ import {onCreatePlace} from '../graphql/subscriptions'
 /* Import others */
 import Error from './Error'
 
-const PlaceList = () => {
+const PlaceList = ({searchResults}) => {
 
 	const onNewPlace = (prevQuery,newData) => {
 		let updatedQuery = {...prevQuery}
@@ -33,10 +33,25 @@ const PlaceList = () => {
 				if (loading || !data.listPlaces) {
 					return <Loading fullscreen={true} />
 				}
-				console.log(data)
+
+				const places = searchResults.length > 0 ? searchResults: data.listPlaces.items
+
 				return (
 					<>
-						{data.listPlaces.items.map(place => (
+					{searchResults.length > 0 ? (
+						<h2 className="text-green">
+							<Icon type="success" name="check" className="icon"/>
+							{searchResults.length} Results 
+						</h2>
+					): (
+					<h2 className="header">
+						<img src="https://icon.now.sh/store_mall_directory/527FFF"
+							alt="Store Icon"
+							className="large-icon">
+						</img>
+						Places
+					</h2>)}
+						{places.map(place => (
 							<div key={place.id} className="my-2">
 								<Card bodyStyle={{
 									padding: "0.7em",
