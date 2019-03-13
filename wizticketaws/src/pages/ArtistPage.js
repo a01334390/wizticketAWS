@@ -27,7 +27,7 @@ class ArtistPage extends React.Component {
 				]
 			}
 		}))
-		this.setState({searchResults: result.data.searchPlaces.items, isSearching: false})
+		this.setState({searchResults: result.data.searchWizEvents.items, isSearching: false})
 		console.log(result)
 	  } catch(err){
 		console.error(err)
