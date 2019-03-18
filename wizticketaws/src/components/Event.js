@@ -6,11 +6,12 @@ import { Notification, Popover, Button, Dialog, Card, Form, Input } from 'elemen
 import { UserContext } from '../App'
 import BuyTickets from '../components/BuyTickets'
 
-import {updateWizEvent} from '../graphql/mutations'
+import {updateWizEvent, deleteWizEvent} from '../graphql/mutations'
 
 class Event extends React.Component {
 	state = {
 		updatedEventDialog: false,
+		deleteProductDialog: false,
 		name: '',
 		description: '',
 		validUntil: ''
@@ -23,6 +24,32 @@ class Event extends React.Component {
 			description: wevent.description,
 			validUntil: wevent.validUntil
 		})
+	}
+
+	handleDeleteEvent = async eventId => {
+		try{
+			this.setState({deleteProductDialog: false})
+			const input = {
+				id: eventId
+			}
+			//eslint-disable-next-line
+			await API.graphql(graphqlOperation(deleteWizEvent, {input}))
+			Notification({
+				title: "Success",
+				message: "Event"+eventId+" successfully deleted!",
+				type: "success",
+				duration: 4000
+			})
+
+		}catch(err){
+			Notification({
+				title: "Error",
+				message: "Failed to delete the event: "+eventId,
+				type: "success",
+				duration: 4000
+			})
+		}
+		setTimeout(()=> window.location.reload(),4000)
 	}
 
 	onHandleUpdateEvent = async (id) => {
@@ -40,18 +67,15 @@ class Event extends React.Component {
 			Notification({
 				title: "Success",
 				message: "Event"+id+" successfully updated!",
-				type: "success",
-				duration: 4000
+				type: "success"
 			})
 		}catch(err){
 			Notification({
 				title: "Error",
 				message: "Something happened",
-				type: "error",
-				duration: 4000
+				type: "error"
 			})
 		}
-		setTimeout(()=> window.location.reload(),4000)
 	}
 
 	render() {
@@ -100,7 +124,18 @@ class Event extends React.Component {
 								{isOwner && (
 									<>
 										<Button type="warning" icon="edit" className="m-1" onClick={() => this.setState({ updatedEventDialog: true })} />
-										<Button type="danger" icon="delete" />
+										<Popover placement="top" width="160" trigger="click" visible={this.state.deleteProductDialog} content={
+											<>
+												<p>Do you want to delete this event?</p>
+												<div className="text-right">
+													<Button size="mini" type="text" className="m-1" onClick={()=> this.setState({deleteProductDialog: false})}>Cancel</Button>
+													<Button type="primary" size="mini" className="m-1" onClick={()=>this.handleDeleteEvent(wevent.id)}>Confirm</Button>
+												</div>
+											</>
+										}>
+											<Button type="danger" icon="delete" onClick={() => this.setState({ deleteProductDialog: true })} />
+										</Popover>
+										
 									</>
 								)}
 							</div>

@@ -8,6 +8,7 @@ import { Loading, Tabs, Icon } from 'element-react'
 import NewEvent from '../components/NewEvent'
 import Event from '../components/Event'
 // import Event from '../components/Event'
+import {onCreateWizEvent, onDeleteWizEvent, onUpdateWizEvent} from '../graphql/subscriptions'
 
 const getPlace = `query GetPlace($id: ID!) {
   getPlace(id: $id) {
@@ -66,8 +67,58 @@ class PlacePage extends React.Component {
     isPlaceOwner: false
   };
 
-  componentDidMount = async () => {
+  componentDidMount = () => {
     this.handleGetMarket()
+    this.createWizEventListener = API.graphql(graphqlOperation(onCreateWizEvent))
+    .subscribe({
+      next: weventData => {
+        const createdEvent = weventData.value.data.onCreateWizEvent
+        const prevEvents = this.state.place.wizevents.items.filter(
+          item => item.id !== createdEvent.id
+        )
+        const updatedEvents = [createdEvent,...prevEvents]
+        const place = {...this.state.place}
+        place.wizevents.items = updatedEvents
+        this.setState({place})
+      }
+    })
+
+    this.updateWizEventListener = API.graphql(graphqlOperation(onUpdateWizEvent))
+    .subscribe({
+      next: weventData => {
+        const updatedEvent = weventData.value.data.onUpdateWizEvent
+        const updatedEventIndex = this.state.place.wizevents.items.findIndex(
+          item => item.id === updatedEvent.id
+        )
+        const updatedEvents = [
+          ...this.state.place.wizevents.items.slice(0,updatedEventIndex),
+          updatedEvent,
+          ...this.state.place.wizevents.items.slice(updatedEventIndex + 1)
+        ]
+        const place = {...this.state.place}
+        place.wizevents.items = updatedEvents
+        this.setState({place})
+      }
+    })
+
+    this.deleteWizEventListener = API.graphql(graphqlOperation(onDeleteWizEvent))
+    .subscribe({
+      next: weventData => {
+        const createdEvent = weventData.value.data.onDeleteWizEvent
+        const updatedEvents = this.state.place.wizevents.items.filter(
+          item => item.id !== createdEvent.id
+        )
+        const place = {...this.state.place}
+        place.wizevents.items = updatedEvents
+        this.setState({place})
+      }
+    })
+  }
+
+  componentWillUnmount = () => {
+    this.createWizEventListener.unsubscribe()
+    this.updateWizEventListener.unsubscribe()
+    this.deleteWizEventListener.unsubscribe()
   }
 
   handleGetMarket = async () => {
