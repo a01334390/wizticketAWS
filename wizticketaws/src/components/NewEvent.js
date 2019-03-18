@@ -4,7 +4,7 @@ import { Storage, Auth, API, graphqlOperation } from 'aws-amplify'
 import { updateWizEvent , createWizEvent } from '../graphql/mutations'
 import { PhotoPicker } from 'aws-amplify-react'
 import aws_exports from '../aws-exports'
-import { Form, Button, Input, Notification, Radio, Progress, Select } from 'element-react'
+import { Form, Button, Input, Notification, Progress } from 'element-react'
 
 var initialstate = {
 	name: "",
@@ -14,7 +14,8 @@ var initialstate = {
 	place: "",
 	imagePreview: "",
 	image: "",
-	isUploading: false
+	isUploading: false,
+	percentUploaded: 0
 };
 
 class NewEvent extends React.Component {
@@ -34,7 +35,12 @@ class NewEvent extends React.Component {
 			const { identityId } = await Auth.currentCredentials()
 			const filename = `/${visibility}/${identityId}/${Date.now()}-${this.state.image.name}`
 			const uploadedFile = await Storage.put(filename, this.state.image.file, {
-				contentType: this.state.image.type
+				contentType: this.state.image.type,
+				progressCallback: progress => {
+					console.log(`Uploaded: ${progress.loaded}/${progress.total}`)
+					const percentUploaded = Math.round((progress.loaded / progress.total) * 100)
+					this.setState({percentUploaded})
+				}
 			})
 			
 			const file = {
@@ -48,7 +54,7 @@ class NewEvent extends React.Component {
 				owner: this.state.user.username,
 				createdAt: Date.now().toString(),
 				validUntil: this.state.validUntil,
-				pictures: [file]
+				pictures: file
 			}
 			const result = await API.graphql(graphqlOperation(createWizEvent, { input }))
 			console.log('created event', result)
@@ -73,8 +79,7 @@ class NewEvent extends React.Component {
 	}
 
 	render() {
-		console.log(this.state.place)
-		const { imagePreview, isUploading} = this.state
+		const { imagePreview, isUploading, percentUploaded} = this.state
 
 		return (
 			<div className="flex-center">
@@ -94,6 +99,14 @@ class NewEvent extends React.Component {
 							<img className="image-preview"
 								src={imagePreview}
 								alt="Product Preview" />
+						)}
+						{percentUploaded > 0 && (
+							<Progress 
+								type="circle"
+								status="success"
+								className="progress"
+								percentage={percentUploaded}
+							/>
 						)}
 						<PhotoPicker
 							title="Event Image"

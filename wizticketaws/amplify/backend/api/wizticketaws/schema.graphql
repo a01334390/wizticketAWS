@@ -23,7 +23,7 @@ type WizEvent
     validUntil: String!
     place: Place @connection(name: "PlaceEvent")
     tickets: [Ticket] @connection(name:"EventTicket",sortField:"category")
-    pictures: [S3Object]
+    pictures: S3Object
   }
 
 type User @model{
