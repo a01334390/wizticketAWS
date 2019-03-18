@@ -97,7 +97,7 @@ class App extends Component {
               {/* <Route path="/event/:eventId" component={
                 ({ match }) => <EventPage user={user} eventId={match.params.eventId} />
               } */}
-              />
+              
             </div>
           </>
         </Router>

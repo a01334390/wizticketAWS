@@ -1,0 +1,1 @@
+export const convertPesosToCents = price => (price * 100).toFixed(0)

@@ -1,18 +1,18 @@
 {
-    "wizticket": {
+    "wiz": {
         "awscloudformation": {
-            "AuthRoleName": "wizticketaws-20190302235021-authRole",
-            "UnauthRoleArn": "arn:aws:iam::177947607344:role/wizticketaws-20190302235021-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::177947607344:role/wizticketaws-20190302235021-authRole",
+            "AuthRoleName": "wizticketaws-20190317191225-authRole",
+            "UnauthRoleArn": "arn:aws:iam::177947607344:role/wizticketaws-20190317191225-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::177947607344:role/wizticketaws-20190317191225-authRole",
             "Region": "us-east-1",
-            "DeploymentBucketName": "wizticketaws-20190302235021-deployment",
-            "UnauthRoleName": "wizticketaws-20190302235021-unauthRole",
-            "StackName": "wizticketaws-20190302235021",
-            "StackId": "arn:aws:cloudformation:us-east-1:177947607344:stack/wizticketaws-20190302235021/3c2a8460-3d78-11e9-8d98-0a00a1b75a8c"
+            "DeploymentBucketName": "wizticketaws-20190317191225-deployment",
+            "UnauthRoleName": "wizticketaws-20190317191225-unauthRole",
+            "StackName": "wizticketaws-20190317191225",
+            "StackId": "arn:aws:cloudformation:us-east-1:177947607344:stack/wizticketaws-20190317191225/e42d4460-491a-11e9-976c-0a182a3cd028"
         },
         "categories": {
             "auth": {
-                "cognito647fb807": {}
+                "cognitoba391bdc": {}
             }
         }
     }

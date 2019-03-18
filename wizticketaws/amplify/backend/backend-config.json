@@ -1,6 +1,6 @@
 {
 	"auth": {
-		"cognito647fb807": {
+		"cognitoba391bdc": {
 			"service": "Cognito",
 			"providerPlugin": "awscloudformation"
 		}
@@ -12,6 +12,12 @@
 			"output": {
 				"securityType": "AMAZON_COGNITO_USER_POOLS"
 			}
+		}
+	},
+	"storage": {
+		"s302d0ffa7": {
+			"service": "S3",
+			"providerPlugin": "awscloudformation"
 		}
 	},
 	"analytics": {

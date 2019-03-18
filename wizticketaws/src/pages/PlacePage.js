@@ -5,6 +5,9 @@ import {API, graphqlOperation} from 'aws-amplify'
 import {getPlace} from '../graphql/queries'
 /* Element UI */
 import {Loading, Tabs, Icon} from 'element-react'
+/* Component */
+import NewEvent from '../components/NewEvent'
+// import Event from '../components/Event'
 
 class PlacePage extends React.Component {
   state = {
@@ -64,7 +67,7 @@ class PlacePage extends React.Component {
                 Add Event
               </>
             } name="1">
-              
+              <NewEvent place={this.state.place} user={this.props.user}/>
             </Tabs.Pane>
           )}
 
@@ -72,9 +75,15 @@ class PlacePage extends React.Component {
           <Tabs.Pane label={
             <>
             <Icon name="menu" className="icon"/>
-            Events ({place.wizevents.length})
+            All Events
             </>
           } name="2">
+
+          {/* <div className="event-list"/>
+            {place.wizevents.map(wizevents => (
+              <Event event={wizevents}/>
+            ))}
+          </div> */}
 
           </Tabs.Pane>
         </Tabs>

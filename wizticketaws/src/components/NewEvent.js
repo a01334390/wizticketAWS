@@ -1,138 +1,140 @@
-import React from "react";
+import React from 'react';
 // prettier-ignore
-import { Form, Button, Dialog, Input, Notification, Select } from 'element-react'
-/* Receive the mutation */
-import { API, graphqlOperation } from 'aws-amplify'
-import { createWizEvent } from '../graphql/mutations'
-import { listPlaces } from '../graphql/queries'
-/* Receive the cntext */
-import { UserContext } from '../App'
+import { Storage, Auth, API, graphqlOperation } from 'aws-amplify'
+import { updateWizEvent , createWizEvent } from '../graphql/mutations'
+import { PhotoPicker } from 'aws-amplify-react'
+import aws_exports from '../aws-exports'
+import { Form, Button, Input, Notification, Radio, Progress, Select } from 'element-react'
+
+var initialstate = {
+	name: "",
+	description: "",
+	user: "",
+	validUntil: "",
+	place: "",
+	imagePreview: "",
+	image: "",
+	isUploading: false
+};
+
 class NewEvent extends React.Component {
 	state = {
-		addEventDialog: false,
-		name: "",
-		description: "",
-		owner: "",
-		validUntil: "",
-		place: "",
-		places: [],
-		options: []
+		...initialstate
 	};
 
-	componentDidMount = async () => {
-		const result = await API.graphql(graphqlOperation(listPlaces))
-		this.setState({ places: result.data.listPlaces.items })
+	componentDidMount = () => {
+		this.setState({ place: this.props.place, user: this.props.user })
 	}
 
-	handleAddEvent = async user => {
+	handleAddEvent = async () => {
 		try {
-			console.log(this.state.place)
-			this.setState({ addEventDialog: false })
-			/* Generate the seating conf data */
+			this.setState({ isUploading: true })
+
+			const visibility = "public"
+			const { identityId } = await Auth.currentCredentials()
+			const filename = `/${visibility}/${identityId}/${Date.now()}-${this.state.image.name}`
+			const uploadedFile = await Storage.put(filename, this.state.image.file, {
+				contentType: this.state.image.type
+			})
+			
+			const file = {
+				key: uploadedFile.key,
+				bucket: aws_exports.aws_user_files_s3_bucket,
+				region: aws_exports.aws_project_region
+			}
 			const input = {
 				name: this.state.name,
 				description: this.state.description,
-				owner: user.username,
+				owner: this.state.user.username,
+				createdAt: Date.now().toString(),
 				validUntil: this.state.validUntil,
-				// place: this.state.place,
-				createdAt: new Date()
+				pictures: [file]
 			}
 			const result = await API.graphql(graphqlOperation(createWizEvent, { input }))
-			Notification.success({
+			console.log('created event', result)
+			const oresult = await API.graphql(graphqlOperation(updateWizEvent, {input: {id: result.data.createWizEvent.id, wizEventPlaceId: this.state.place.id}}))
+			console.log('added place', oresult)
+			Notification({
 				title: "Success",
-				message: `Created Event: id ${result.data.createWizEvent.id}`
+				message: "Event Successfully created!",
+				type: 'success'
 			})
-
-			this.setState({ name: "", description: "", owner: "", validUntil: "", place: "" })
-
-		} catch (err) {
-			Notification.error({
+			this.setState({ ...initialstate })
+		} catch (error) {
+			console.log('error creating event', error.errors[0].message)
+			Notification({
 				title: "Error",
-				message: `${err.errors[0].message || "Error adding Event"}`
+				message:  error.errors[0].message,
+				type: 'error'
 			})
 		}
-	}
 
-	handleFilterPlaces = query => {
-		const options = this.state.places
-			.map(place => ({ name: place.name, id: place.id , data: place}))
-			.filter(place => place.name.toLowerCase().includes(query.toLowerCase()));
-		this.setState({ options });
+		
 	}
 
 	render() {
+		console.log(this.state.place)
+		const { imagePreview, isUploading} = this.state
+
 		return (
-			<UserContext.Consumer>
-				{({ user }) => <>
-					<div className="market-header">
-						<h1 className="market-title">
-							Create your Event
-				<Button type="text" icon="edit" className="market-title-button" onClick={() => this.setState({ addEventDialog: true })} />
-						</h1>
-						{/** Elastic Search */}
-						<Form inline={true} onSubmit={this.props.handleSearch}>
-							<Form.Item>
-								<Input
-									placeholder="Search Events..."
-									icon="circle-cross"
-									onIconClick={this.props.handleClearSearch}
-									onChange={this.props.handleSearchChange}
-									value={this.props.searchTerm} />
-							</Form.Item>
-							<Form.Item>
-								<Button
-									type="info"
-									icon="search"
-									onClick={this.props.handleSearch}
-									loading={this.props.isSearching}>
-									Search
+			<div className="flex-center">
+				<h2 className="header"> Add new Event </h2>
+				<div>
+					<Form className="market-header">
+						<Form.Item label="Add Event Name">
+							<Input placeholder="Event Name" trim={true} onChange={name => this.setState({ name })} value={this.state.name} />
+						</Form.Item>
+						<Form.Item label="Add Event Description">
+							<Input placeholder="Event Description" trim={true} onChange={description => this.setState({ description })} value={this.state.description} />
+						</Form.Item>
+						<Form.Item label="Add Event Date">
+							<Input type="date" icon="plus" placeholder="Price ($USD)" trim={true} onChange={validUntil => this.setState({ validUntil })} value={this.state.validUntil} />
+						</Form.Item>
+						{imagePreview && (
+							<img className="image-preview"
+								src={imagePreview}
+								alt="Product Preview" />
+						)}
+						<PhotoPicker
+							title="Event Image"
+							preview="hidden"
+							onLoad={url => this.setState({ imagePreview: url })}
+							onPick={file => this.setState({ image: file })}
+							theme={{
+								formContainer: {
+									margin: 0,
+									padding: '0.8em'
+								},
+								formSection: {
+									display: 'flex',
+									flexDirection: 'column',
+									alignItems: 'center',
+									justifyContent: 'center'
+								},
+								sectionHeader: {
+									padding: '0.2em',
+									color: "var(--darkAmazonOrange)"
+								},
+								sectionBody: {
+									margin: 0,
+									width: "250px"
+								},
+
+								photoPickerButton: {
+									display: "none"
+								}
+							}}
+						/>
+						<Form.Item>
+							<Button loading={isUploading} disabled={!this.state.image || !this.state.description || !this.state.name || !this.state.validUntil || isUploading} type="primary" onClick={this.handleAddEvent}>
+							{isUploading ? 'Uploading...' : 'Add event'}
 							</Button>
-							</Form.Item>
-						</Form>
-					</div>
-					{/** Creation Dialog */}
-					<Dialog title="Create New Event" visible={this.state.addEventDialog} onCancel={() => this.setState({ addEventDialog: false })} size="large" customClass="dialog">
-						<Dialog.Body>
-							<Form labelPosition="top">
-								<Form.Item label="Add Event Name">
-									<Input placeholder="Event Name" trim={true} onChange={name => this.setState({ name })} value={this.state.name} />
-								</Form.Item>
-								<Form.Item label="Add Event Description">
-									<Input placeholder="Event Description" trim={true} onChange={description => this.setState({ description })} value={this.state.description} />
-								</Form.Item>
-								<Form.Item label="Add Event Date">
-									<Input type="date" icon="plus" placeholder="Price ($USD)" trim={true} onChange={validUntil => this.setState({ validUntil })} value={this.state.validUntil} />
-								</Form.Item>
-								<Form.Item label="Select an Event Place">
-									<Select
-										multiple={false}
-										filterable={true}
-										placeholder="Event Places"
-										onChange={selectedPlace => this.setState({ place: selectedPlace })}
-										remoteMethod={this.handleFilterPlaces}
-										remote={true}>
-										{this.state.options.map(option => (
-											<Select.Option key={option.id} label={option.name} value={option.data} />
-										))}
-
-									</Select>
-								</Form.Item>
-							</Form>
-						</Dialog.Body>
-						<Dialog.Footer>
-							<Button onClick={() => this.setState({ addEventDialog: false })}>
-								Cancel
-				</Button>
-							<Button type="primary" disabled={!this.state.name && !this.state.description && !this.state.validUntil} onClick={() => this.handleAddEvent(user)}>
-								Add
-				</Button>
-						</Dialog.Footer>
-					</Dialog>
-
-				</>}
-			</UserContext.Consumer>
+						</Form.Item>
+					</Form>
+				</div>
+			</div>
 		)
 	}
 }
 
-export default NewEvent;
+export default NewEvent
