@@ -9,6 +9,7 @@ import HomePage from './pages/HomePage'
 import ProfilePage from './pages/ProfilePage'
 import PlacePage from './pages/PlacePage'
 import NavBar from './components/NavBar'
+import TicketSelection from './pages/TicketSelection';
 
 /* Context */
 export const UserContext = React.createContext()
@@ -90,10 +91,10 @@ class App extends Component {
               <Route path="/place/:placeId" component={
                 ({ match }) => <PlacePage user={user} placeId={match.params.placeId} />
               } />
-              
-              {/* <Route path="/event/:eventId" component={
-                ({ match }) => <EventPage user={user} eventId={match.params.eventId} />
-              } */}
+              {/** Ticketing pages */}
+              <Route path="/selection/:eventId" component={
+                ({ match }) => <TicketSelection user={user} eventId={match.params.eventId}/>
+              }/>
               
             </div>
           </>

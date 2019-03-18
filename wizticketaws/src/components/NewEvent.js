@@ -1,7 +1,7 @@
 import React from 'react';
 // prettier-ignore
 import { Storage, Auth, API, graphqlOperation } from 'aws-amplify'
-import { updateWizEvent , createWizEvent } from '../graphql/mutations'
+import { updateWizEvent , createWizEvent, createTicket } from '../graphql/mutations'
 import { PhotoPicker } from 'aws-amplify-react'
 import aws_exports from '../aws-exports'
 import { Form, Button, Input, Notification, Progress } from 'element-react'
@@ -25,6 +25,21 @@ class NewEvent extends React.Component {
 
 	componentDidMount = () => {
 		this.setState({ place: this.props.place, user: this.props.user })
+	}
+
+	handleCreateTickets = async (wevent) => {
+		for(var i = 0; i < this.state.place.seatingConfiguration.length; i++){
+			for(var x=0; x < this.state.place.seatingConfiguration[i].capacity;x++){
+				const input = {
+					ticketWizeventId : wevent.data.createWizEvent.id,
+					category: this.state.place.seatingConfiguration[i].category,
+					value: this.state.place.seatingConfiguration[i].pricing,
+					seat: x+1
+				}
+				await API.graphql(graphqlOperation(createTicket,{input}))
+				console.log("added ticket:",input)
+			}
+		}
 	}
 
 	handleAddEvent = async () => {
@@ -60,6 +75,7 @@ class NewEvent extends React.Component {
 			console.log('created event', result)
 			const oresult = await API.graphql(graphqlOperation(updateWizEvent, {input: {id: result.data.createWizEvent.id, wizEventPlaceId: this.state.place.id}}))
 			console.log('added place', oresult)
+			await this.handleCreateTickets(result)
 			Notification({
 				title: "Success",
 				message: "Event Successfully created!",
@@ -67,7 +83,7 @@ class NewEvent extends React.Component {
 			})
 			this.setState({ ...initialstate })
 		} catch (error) {
-			console.log('error creating event', error.errors[0].message)
+			console.log('error creating event',error)
 			Notification({
 				title: "Error",
 				message:  error.errors[0].message,

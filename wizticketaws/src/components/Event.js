@@ -3,8 +3,8 @@ import React from 'react'
 import {API, graphqlOperation} from 'aws-amplify'
 import { S3Image } from 'aws-amplify-react'
 import { Notification, Popover, Button, Dialog, Card, Form, Input } from 'element-react'
+import {Link} from 'react-router-dom'
 import { UserContext } from '../App'
-import BuyTickets from '../components/BuyTickets'
 
 import {updateWizEvent, deleteWizEvent} from '../graphql/mutations'
 
@@ -109,7 +109,11 @@ class Event extends React.Component {
 									</span>
 									{!isOwner && (
 										<>
-											<BuyTickets />
+										<Link className="link" to={`/selection/${wevent.id}`}>
+										<Button type="success" disabled={wevent.tickets.items.length === 0} className="m-1">
+												{wevent.tickets.items.length === 0 ? "Sold out" : "Buy Tickets"}
+											</Button>
+										</Link>
 										</>
 									)}
 								</div>

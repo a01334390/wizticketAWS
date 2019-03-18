@@ -7,7 +7,7 @@ class BuyTickets extends React.Component {
 
 	render () {
 		return (
-			<></>
+			<>Buy Tickets</>
 		)
 	}
 }
