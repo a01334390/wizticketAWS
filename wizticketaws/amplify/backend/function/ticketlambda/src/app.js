@@ -25,8 +25,8 @@ var AWS = require('aws-sdk')
 const config = {
   region: "us-east-1",
   adminEmail: "martingarciadelangel@me.com",
-  accessKeyId: "AKIAIPY3LKQPWYQ335BA",
-  secretAccessKey: "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"
+  accessKeyId: "AKIAJFUTJQML4RJLHGFQ",
+  secretAccessKey: "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"
 }
 
 var ses = new AWS.SES(config)

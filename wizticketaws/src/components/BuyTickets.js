@@ -5,8 +5,13 @@ import StripeCheckout from 'react-stripe-checkout'
 /** Element UI */
 import { Notification, Message } from 'element-react'
 
+/** Update ticket owner's */
+import {updateTicket} from '../graphql/mutations'
+
 /** AWS Stuff */
-import { API } from 'aws-amplify'
+import { API, graphqlOperation} from 'aws-amplify'
+
+import {history} from '../App'
 
 const stripeConfig = {
 	currency: "MXN",
@@ -14,8 +19,9 @@ const stripeConfig = {
 }
 
 const BuyTickets = ({ tickets, user, amount}) => {
-	console.log(amount)
+	
 	const handleCharge = async token => {
+		console.log(tickets)
 		try {
 			const result = await API.post('ticketlambda', '/charge', {
 				body: {
@@ -30,11 +36,31 @@ const BuyTickets = ({ tickets, user, amount}) => {
 					}
 				}
 			})
-			Notification({
-				title: "Success",
-				message: "Your payment was received correctly",
-				type: "success"
-			})
+			if(result.charge.status === "succeeded"){
+				for(var i = 0; i < tickets.length; i++){
+					var input = {
+						id: tickets[i].key,
+						ticketOwnerId: user.attributes.sub
+					}
+					const r = await API.graphql(graphqlOperation(updateTicket,{input}))
+					console.log(r)
+				}
+				Notification({
+					title: "Success",
+					message: "Payment was processed correctly",
+					type: "success",
+					duration: 3000
+				})
+				setTimeout(()=>{
+					history.push('/')
+					Message({
+						type: 'info',
+						message: 'Check your verified email for order tickets',
+						duration: 5000,
+						showClose: true
+					})
+				},3000)
+			}
 			console.log({ result })
 		} catch (err) {
 			Notification({

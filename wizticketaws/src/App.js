@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Authenticator, AmplifyTheme } from 'aws-amplify-react'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { Router, Route } from 'react-router-dom'
 import { API, graphqlOperation, Auth, Hub } from 'aws-amplify'
 import {getUser} from './graphql/queries'
 import {createUser} from './graphql/mutations'
 import './App.css';
+import createBrowserHistory from 'history/createBrowserHistory'
 
 /* Pages and components */
 import HomePage from './pages/HomePage'
@@ -15,6 +16,8 @@ import TicketSelection from './pages/TicketSelection';
 
 /* Context */
 export const UserContext = React.createContext()
+
+export const history = createBrowserHistory()
 
 const theme = {
   ...AmplifyTheme,
@@ -105,7 +108,7 @@ class App extends Component {
     const { user } = this.state
     return !user ? (<Authenticator theme={theme} />) : (
       <UserContext.Provider value={{user}}>
-        <Router>
+        <Router history={history}>
           <>
             {/** Navigation Bar */}
             <NavBar user={user} handleSignout={this.handleSignout} />
