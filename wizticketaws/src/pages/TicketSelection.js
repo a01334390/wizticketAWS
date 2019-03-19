@@ -76,11 +76,13 @@ class TicketSelection extends React.Component {
 	}
 	render() {
 		const { event, isLoading, selectedTicket } = this.state
+		console.log(this.state.seats)
 
 		return (
 			
 			<UserContext.Consumer>
 				{({user}) => {
+					console.log(user)
 					
 					return isLoading ? (<Loading fullscreen={true} />) : (
 						<>
@@ -163,7 +165,7 @@ class TicketSelection extends React.Component {
 														</div>
 			
 														<div style={{ marginTop: "1%", marginBottom: "1%",alignSelf: "center"}}>
-															<BuyTickets tickets={this.state.seats} user={user}/>
+															<BuyTickets amount={this.state.totalPrice} tickets={this.state.seats} user={user}/>
 														</div>
 													</>)}
 												</Layout.Col>

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Authenticator, AmplifyTheme } from 'aws-amplify-react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
-import { Auth, Hub } from 'aws-amplify'
+import { API, graphqlOperation, Auth, Hub } from 'aws-amplify'
+import {getUser} from './graphql/queries'
+import {createUser} from './graphql/mutations'
 import './App.css';
 
 /* Pages and components */
@@ -62,17 +64,40 @@ class App extends Component {
       case "signIn":
         console.log('signed in!')
         this.getUserData()
+        this.registerNewUser(capsule.payload.data)
         break;
       case "signUp":
         console.log('signed up!')
         break;
-      case "signOff":
+      case "signOut":
         console.log('signed out')
         this.setState({ user: null })
         break;
       default:
         console.log('not supported')
         break;
+    }
+  }
+
+  registerNewUser = async signInData => {
+    const getUserInput = {
+      id: signInData.signInUserSession.idToken.payload.sub
+    }
+    const {data} = await API.graphql(graphqlOperation(getUser,getUserInput))
+    if(!data.getUser) {
+      try {
+        const registerUserInput = {
+          ...getUserInput,
+          username: signInData.username,
+          email: signInData.signInUserSession.idToken.payload.email,
+          registered: true,
+          group: 'fan'
+        }
+        const newUser = await API.graphql(graphqlOperation(createUser, {input: registerUserInput}))
+        console.log({newUser})
+      } catch(err){
+        console.error("Error registering new user",err)
+      }
     }
   }
 

@@ -19,6 +19,18 @@ app.use(awsServerlessExpressMiddleware.eventContext())
 require('dotenv').config()
 var stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
+//AWS SDK
+var AWS = require('aws-sdk')
+
+const config = {
+  region: "us-east-1",
+  adminEmail: "martingarciadelangel@me.com",
+  accessKeyId: "AKIAIPY3LKQPWYQ335BA",
+  secretAccessKey: "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"
+}
+
+var ses = new AWS.SES(config)
+
 
 // Enable CORS for all methods
 app.use(function(req, res, next) {
@@ -46,8 +58,8 @@ app.get('/charge/*', function(req, res) {
 * Example post method *
 ****************************/
 
-app.post('/charge', async (req,res) => {
-  const {token} = req.body
+const chargeHandler = async (req,res, next) => {
+  const {token, email} = req.body
   const {currency, amount, description} = req.body.charge
   try{
     const charge = await stripe.charges.create({
@@ -56,11 +68,54 @@ app.post('/charge', async (req,res) => {
       currency,
       description
     })
-    res.json(charge)
+    if(charge.status === "succeeded"){
+      req.charge = charge
+      req.email = email
+      req.description = description
+      next()
+    }
   }catch(err){
     res.status(500).json({error: err})
   }
-})
+}
+
+const emailHandler = async (req,res) => {
+  const {charge, description, email: {customerEmail}} = req
+
+  ses.sendEmail({
+    Source: config.adminEmail,
+    ReturnPath: config.adminEmail,
+    Destination: {
+      ToAddresses: [config.adminEmail]
+    }, Message: {
+      Subject: {
+        Data: 'Order Details - Wizticket'
+      },
+      Body: {
+        Html: {
+          Charset: 'UTF-8',
+          Data: `
+          <h3>Tickets processed!</h3>
+          <p> <span font-weight: bold> ${description}</span> - $ ${charge.amount/100}
+          <p> Customer Email: <a href="mailto:${customerEmail}"> ${customerEmail}</a></p>
+          <p style="font-style: italic; color: grey;">Tickets were emailed, check shortly your email for your tickets</p>
+          `
+        }
+      }
+    }
+  }, (err,data) => {
+    if (err) {
+      return res.status(500).json({error: err})
+    }
+    res.json({
+      message: "Tickets processed successfully!",
+      charge,
+      data
+    })
+  })
+}
+
+app.post('/charge', chargeHandler, emailHandler)
 
 app.post('/charge/*', function(req, res) {
   // Add your code here
