@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom'
 
 /** GraphQL Operation */
 import { API, graphqlOperation } from 'aws-amplify'
-import { getWizEvent } from '../graphql/queries'
 
 /** S3 Money Things */
 import { S3Image } from 'aws-amplify-react'
@@ -14,6 +13,62 @@ import BuyTickets from "../components/BuyTickets";
 
 /** User Context */
 import { UserContext } from '../App'
+
+export const getWizEvent = `query GetWizEvent($id: ID!) {
+	getWizEvent(id: $id) {
+	  id
+	  name
+	  description
+	  createdAt
+	  owner
+	  validUntil
+	  place {
+		id
+		name
+		description
+		bookingCost
+		address {
+		  city
+		  country
+		  address_line1
+		  address_state
+		  address_zip
+		}
+		seatingConfiguration {
+		  category
+		  capacity
+		  pricing
+		}
+		owner
+		wizevents {
+		  nextToken
+		}
+		pictures {
+		  bucket
+		  region
+		  key
+		}
+	  }
+	  tickets {
+		items {
+		  id
+		  category
+		  seat
+		  value
+		  owner {
+			  id
+		  }
+		}
+		nextToken
+	  }
+	  pictures {
+		bucket
+		region
+		key
+	  }
+	}
+  }
+  `;
 
 
 class TicketSelection extends React.Component {
@@ -49,7 +104,6 @@ class TicketSelection extends React.Component {
 			totalPrice += this.state.data.filter(t => t.key === ticket)[0].value,
 			seats.push(this.state.data.filter(t => t.key === ticket)[0])
 		))
-		console.log(seats)
 		this.setState({ selectedTicket: value, totalPrice, seats })
 	}
 
@@ -59,9 +113,10 @@ class TicketSelection extends React.Component {
 		}
 
 		const result = await API.graphql(graphqlOperation(getWizEvent, input))
+		console.log(result)
 		var data = []
 		for (var i = 0; i < result.data.getWizEvent.tickets.items.length; i++) {
-			if (result.data.getWizEvent.tickets.items[i].owner === undefined) {
+			if (result.data.getWizEvent.tickets.items[i].owner === null) {
 				var ticket = {
 					label: result.data.getWizEvent.tickets.items[i].category + "-" + result.data.getWizEvent.tickets.items[i].seat,
 					key: result.data.getWizEvent.tickets.items[i].id,
@@ -76,8 +131,6 @@ class TicketSelection extends React.Component {
 	}
 	render() {
 		const { event, isLoading, selectedTicket } = this.state
-		console.log(this.state.seats)
-
 		return (
 			
 			<UserContext.Consumer>

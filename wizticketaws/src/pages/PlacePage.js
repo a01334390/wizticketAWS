@@ -44,7 +44,10 @@ const getPlace = `query GetPlace($id: ID!) {
             id
             category 
             seat 
-            value 
+            value
+            owner {
+              id
+            } 
           }
         }
         validUntil
@@ -142,7 +145,6 @@ class PlacePage extends React.Component {
   render() {
 
     const { place, isLoading, isPlaceOwner } = this.state
-    console.log(place)
     return isLoading ? (<Loading fullscreen={true} />) : (
       <>
         {/** Back Button */}

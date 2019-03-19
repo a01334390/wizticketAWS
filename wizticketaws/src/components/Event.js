@@ -14,16 +14,25 @@ class Event extends React.Component {
 		deleteProductDialog: false,
 		name: '',
 		description: '',
-		validUntil: ''
+		validUntil: '',
+		ticketsLeft : 0
 	}
 
 	componentDidMount = () => {
 		const {wevent} = this.props
+		var ticketsLeft = 0
+		for(var i = 0; i < wevent.tickets.items.length; i++){
+			if(wevent.tickets.items[i].owner === null){
+				ticketsLeft++
+			}
+		}
 		this.setState({
 			name: wevent.name,
 			description: wevent.description,
-			validUntil: wevent.validUntil
+			validUntil: wevent.validUntil,
+			ticketsLeft
 		})
+		
 	}
 
 	handleDeleteEvent = async eventId => {
@@ -80,6 +89,7 @@ class Event extends React.Component {
 
 	render() {
 		const { wevent } = this.props
+		const {ticketsLeft} = this.state
 		return (
 			<UserContext.Consumer>
 				{({ user }) => {
@@ -110,8 +120,8 @@ class Event extends React.Component {
 									{!isOwner && (
 										<>
 										<Link className="link" to={`/selection/${wevent.id}`}>
-										<Button type="success" disabled={wevent.tickets.items.length === 0} className="m-1">
-												{wevent.tickets.items.length === 0 ? "Sold out" : "Buy Tickets"}
+										<Button type="success" disabled={ticketsLeft === 0} className="m-1">
+												{ticketsLeft === 0 ? "Sold out" : "Buy Tickets"}
 											</Button>
 										</Link>
 										</>
@@ -119,7 +129,7 @@ class Event extends React.Component {
 								</div>
 								<div className="text-right">
 									<span className="mx-1">
-										{wevent.tickets.items.length} Tickets left
+										{ticketsLeft} Tickets left
 									</span>
 								</div>
 							</Card>
