@@ -115,7 +115,8 @@ class App extends Component {
             {/** Event Place Owner Routes */}
             <div className="app-container">
               <Route exact path="/" component={HomePage} />
-              <Route path="/profile" component={ProfilePage} />
+              <Route path="/profile" component={
+                ()=> <ProfilePage user={user}/>} />
               <Route path="/place/:placeId" component={
                 ({ match }) => <PlacePage user={user} placeId={match.params.placeId} />
               } />
