@@ -41,5 +41,11 @@
 			"build": true,
 			"dependsOn": []
 		}
+	},
+	"storage": {
+		"s3ca20e5a2": {
+			"service": "S3",
+			"providerPlugin": "awscloudformation"
+		}
 	}
 }

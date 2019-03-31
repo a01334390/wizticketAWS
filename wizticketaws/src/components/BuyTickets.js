@@ -23,7 +23,7 @@ const BuyTickets = ({ tickets, user, amount}) => {
 	const handleCharge = async token => {
 		console.log(tickets)
 		try {
-			const result = await API.post('ticketlambda', '/charge', {
+			const result = await API.post('api1d2589ab', '/charge', {
 				body: {
 					token,
 					charge: {
