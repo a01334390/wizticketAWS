@@ -1,10 +1,10 @@
 {
     "appName": "wizticketaws",
-    "roleName": "pinpointLambdaRolea65d660d",
-    "cloudWatchPolicyName": "cloudWatchPolicya65d660d",
-    "pinpointPolicyName": "pinpointPolicya65d660d",
-    "authPolicyName": "pinpoint_amplify_a65d660d",
-    "unauthPolicyName": "pinpoint_amplify_a65d660d",
+    "roleName": "pinpointLambdaRole1dfa67af",
+    "cloudWatchPolicyName": "cloudWatchPolicy1dfa67af",
+    "pinpointPolicyName": "pinpointPolicy1dfa67af",
+    "authPolicyName": "pinpoint_amplify_1dfa67af",
+    "unauthPolicyName": "pinpoint_amplify_1dfa67af",
     "authRoleName": {
         "Ref": "AuthRoleName"
     },
