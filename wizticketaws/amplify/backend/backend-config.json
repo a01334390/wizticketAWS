@@ -1,6 +1,6 @@
 {
 	"auth": {
-		"cognito7718fb53": {
+		"cognito80499f3d": {
 			"service": "Cognito",
 			"providerPlugin": "awscloudformation"
 		}
@@ -13,13 +13,13 @@
 				"securityType": "AMAZON_COGNITO_USER_POOLS"
 			}
 		},
-		"api1d2589ab": {
+		"api5bd4cc9d": {
 			"service": "API Gateway",
 			"providerPlugin": "awscloudformation",
 			"dependsOn": [
 				{
 					"category": "function",
-					"resourceName": "api1d2589ab",
+					"resourceName": "wizticketawsa2cc6874",
 					"attributes": [
 						"Name",
 						"Arn"
@@ -34,18 +34,18 @@
 			"providerPlugin": "awscloudformation"
 		}
 	},
+	"storage": {
+		"s306c10fde": {
+			"service": "S3",
+			"providerPlugin": "awscloudformation"
+		}
+	},
 	"function": {
-		"api1d2589ab": {
+		"wizticketawsa2cc6874": {
 			"service": "Lambda",
 			"providerPlugin": "awscloudformation",
 			"build": true,
 			"dependsOn": []
-		}
-	},
-	"storage": {
-		"s3ca20e5a2": {
-			"service": "S3",
-			"providerPlugin": "awscloudformation"
 		}
 	}
 }
