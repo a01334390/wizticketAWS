@@ -48,7 +48,7 @@ class ProfilePage extends React.Component {
       {prop: "value", width: "330"},
       {prop: "tag",   width: "150", render: row => {
         if (row.name === "Email"){
-          var emailVerified = this.props.user.attributes.email_verified
+          var emailVerified = this.props.userAttributes.email_verified
           return emailVerified ? (<Tag type="success">Verified</Tag>) : (<Tag type="danger"> Not Verified </Tag>)
         }
       }},
@@ -82,8 +82,8 @@ class ProfilePage extends React.Component {
   };
 
   componentDidMount = () => {
-    if (this.props.user) {
-      this.getUserTickets(this.props.user.attributes.sub)
+    if (this.props.userAttributes) {
+      this.getUserTickets(this.props.userAttributes.sub)
     }
   }
 
@@ -95,9 +95,9 @@ class ProfilePage extends React.Component {
 
   render() {
     const {tickets, columns, group} = this.state
-    const {user} = this.props
+    const {user, userAttributes} = this.props
 
-    return (
+    return userAttributes && (
     <>
     <Tabs activeName="1" className="profile-tabs">
       <Tabs.Pane label={
@@ -108,10 +108,10 @@ class ProfilePage extends React.Component {
       }>
         <h2 className="header"> Profile Summary </h2>
         <Table columns={columns} showHeader={false} rowClassName={row => row.name === "Delete Profile" && 'delete-profile'}data={[
-          {name: "Your ID", value: user.attributes.sub},
+          {name: "Your ID", value: userAttributes.sub},
           {name: "Username", value: user.username},
-          {name: "Email", value: user.attributes.email},
-          {name: "Phone Number", value: user.attributes.phone_number},
+          {name: "Email", value: userAttributes.email},
+          {name: "Phone Number", value: userAttributes.phone_number},
           {name: "Status", value: group},
           {name: "Delete Profile", value: "Sorry to see you go"}
 

@@ -41,7 +41,8 @@ const theme = {
 
 class App extends Component {
   state = {
-    user: null
+    user: null,
+    userAttributes: null
   }
 
   componentDidMount() {
@@ -51,7 +52,13 @@ class App extends Component {
 
   getUserData = async () => {
     const user = await Auth.currentAuthenticatedUser()
-    user ? this.setState({ user }) : this.setState({ user: null })
+    user ? this.setState({ user }, () => this.getUserAttributes(this.state.user)) : this.setState({ user: null })
+  }
+
+  getUserAttributes = async authUserData => {
+    const attributesArr = await Auth.userAttributes(authUserData)
+    const attributesObj = Auth.attributesToObject(attributesArr)
+    this.setState({userAttributes: attributesObj})
   }
 
   handleSignout = async () => {
@@ -105,7 +112,7 @@ class App extends Component {
   }
 
   render() {
-    const { user } = this.state
+    const { user, userAttributes } = this.state
     return !user ? (<Authenticator theme={theme} />) : (
       <UserContext.Provider value={{user}}>
         <Router history={history}>
@@ -116,7 +123,7 @@ class App extends Component {
             <div className="app-container">
               <Route exact path="/" component={HomePage} />
               <Route path="/profile" component={
-                ()=> <ProfilePage user={user}/>} />
+                ()=> <ProfilePage user={user} userAttributes={userAttributes}/>} />
               <Route path="/place/:placeId" component={
                 ({ match }) => <PlacePage user={user} placeId={match.params.placeId} />
               } />
