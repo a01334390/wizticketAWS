@@ -92,7 +92,7 @@ class Event extends React.Component {
 		const {ticketsLeft} = this.state
 		return (
 			<UserContext.Consumer>
-				{({ user }) => {
+				{({ user, userAttributes }) => {
 
 					const isOwner = user.username === wevent.owner
 

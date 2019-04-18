@@ -114,7 +114,7 @@ class App extends Component {
   render() {
     const { user, userAttributes } = this.state
     return !user ? (<Authenticator theme={theme} />) : (
-      <UserContext.Provider value={{user}}>
+      <UserContext.Provider value={{user, userAttributes}}>
         <Router history={history}>
           <>
             {/** Navigation Bar */}
