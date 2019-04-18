@@ -3,6 +3,7 @@ import React from "react";
 import { Auth, API, graphqlOperation } from 'aws-amplify'
 
 import { Table, Button, Notification, MessageBox, Message, Tabs, Icon, Form, Dialog, Input, Card, Tag } from 'element-react'
+
 import { S3Image } from 'aws-amplify-react'
 
 const getUser = `query GetUser($id: ID!) {
@@ -75,7 +76,7 @@ class ProfilePage extends React.Component {
               )
             case "Delete Profile":
               return (
-                <Button type="danger" size="small">
+                <Button onClick={this.handleDeleteProfile} type="danger" size="small">
                   Delete
               </Button>
               )
@@ -151,6 +152,29 @@ class ProfilePage extends React.Component {
          message: `${err.message || "Error updating email"}`
        })
     }
+  }
+
+  handleDeleteProfile = () => {
+    MessageBox.confirm(
+      "This will PERMANENTLY delete your account. Continue?",
+      "Attention!",
+      {
+        confirmButtonText: "Delete",
+        cancelButtonText: "Cancel",
+        type: "warning"
+      }
+    ).then(async () => {
+      try{
+        await this.props.user.deleteUser()
+      }catch(err){
+        console.err(err)
+      }
+    }).catch(() => {
+      Message({
+        type: "info",
+        message: "Delete was canceled"
+      })
+    })
   }
 
   render() {
