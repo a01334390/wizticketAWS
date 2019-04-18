@@ -13,6 +13,7 @@ import ProfilePage from './pages/ProfilePage'
 import PlacePage from './pages/PlacePage'
 import NavBar from './components/NavBar'
 import TicketSelection from './pages/TicketSelection';
+import TicketValidator from './pages/TicketValidator'
 
 /* Context */
 export const UserContext = React.createContext()
@@ -131,7 +132,10 @@ class App extends Component {
               <Route path="/selection/:eventId" component={
                 ({ match }) => <TicketSelection user={user} eventId={match.params.eventId}/>
               }/>
-              
+              {/** Ticketing validator */}
+              <Route path="/validator/:ticketId" component={
+                ({match}) => <TicketValidator ticketId={match.params.ticketId}/>
+              }/>
             </div>
           </>
         </Router>

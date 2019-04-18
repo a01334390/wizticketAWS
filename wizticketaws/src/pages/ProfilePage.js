@@ -8,6 +8,9 @@ import { S3Image } from 'aws-amplify-react'
 
 import {formatOrder} from '../utils/index'
 
+var QRCode = require('qrcode.react');
+
+
 const getUser = `query GetUser($id: ID!) {
   getUser(id: $id) {
     id
@@ -226,6 +229,7 @@ class ProfilePage extends React.Component {
                     <p>Price: ${ticket.value} MXN</p>
                     <p>For the event:  {ticket.wizevent.name}</p>
                     <p>Date: {formatOrder(ticket.wizevent.validUntil)}</p>
+                    <QRCode value={"localhost:3000/validator/"+ticket.id}></QRCode>
                   </pre>
                 </Card>
               </div>
