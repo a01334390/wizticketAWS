@@ -6,6 +6,8 @@ import { Table, Button, Notification, MessageBox, Message, Tabs, Icon, Form, Dia
 
 import { S3Image } from 'aws-amplify-react'
 
+import {formatOrder} from '../utils/index'
+
 const getUser = `query GetUser($id: ID!) {
   getUser(id: $id) {
     id
@@ -223,7 +225,7 @@ class ProfilePage extends React.Component {
                     <p>Seating: {ticket.seat}</p>
                     <p>Price: ${ticket.value} MXN</p>
                     <p>For the event:  {ticket.wizevent.name}</p>
-
+                    <p>Date: {formatOrder(ticket.wizevent.validUntil)}</p>
                   </pre>
                 </Card>
               </div>
