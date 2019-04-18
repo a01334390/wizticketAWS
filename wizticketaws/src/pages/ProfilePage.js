@@ -229,7 +229,7 @@ class ProfilePage extends React.Component {
                     <p>Price: ${ticket.value} MXN</p>
                     <p>For the event:  {ticket.wizevent.name}</p>
                     <p>Date: {formatOrder(ticket.wizevent.validUntil)}</p>
-                    <QRCode value={"localhost:3000/validator/"+ticket.id}></QRCode>
+                    <QRCode value={ticket.id}></QRCode>
                   </pre>
                 </Card>
               </div>

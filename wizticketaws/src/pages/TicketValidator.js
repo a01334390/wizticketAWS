@@ -66,7 +66,7 @@ class TicketValidator extends React.Component {
                     <p>Owner: {ticket.owner.username}</p>
                     <p>For the event:  {ticket.wizevent.name}</p>
                     <p>Date: {formatOrder(ticket.wizevent.validUntil)}</p>
-                    <QRCode value={"localhost:3000/validator/"+ticket.id}></QRCode>
+                    <QRCode value={ticket.id}></QRCode>
                   </pre>
                 </Card>
               </div>
