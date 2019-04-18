@@ -131,7 +131,6 @@ class PlacePage extends React.Component {
     const result = await API.graphql(graphqlOperation(getPlace, input))
     this.setState({ place: result.data.getPlace, isLoading: false }, () => {
       this.checkMarketOwner()
-      this.checkEmailVerified()
     })
   }
 

@@ -13,13 +13,13 @@
 				"securityType": "AMAZON_COGNITO_USER_POOLS"
 			}
 		},
-		"api5bd4cc9d": {
+		"apif529b0c1": {
 			"service": "API Gateway",
 			"providerPlugin": "awscloudformation",
 			"dependsOn": [
 				{
 					"category": "function",
-					"resourceName": "wizticketawsa2cc6874",
+					"resourceName": "wizticketaws0bcd7da1",
 					"attributes": [
 						"Name",
 						"Arn"
@@ -42,6 +42,12 @@
 	},
 	"function": {
 		"wizticketawsa2cc6874": {
+			"service": "Lambda",
+			"providerPlugin": "awscloudformation",
+			"build": true,
+			"dependsOn": []
+		},
+		"wizticketaws0bcd7da1": {
 			"service": "Lambda",
 			"providerPlugin": "awscloudformation",
 			"build": true,
