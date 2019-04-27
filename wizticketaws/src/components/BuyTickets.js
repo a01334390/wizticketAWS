@@ -13,6 +13,8 @@ import { API, graphqlOperation} from 'aws-amplify'
 
 import {history} from '../App'
 
+const superagent = require('superagent')
+
 const stripeConfig = {
 	currency: "MXN",
 	publishableAPIKey: "pk_test_pUwXaYwXsdJM9MDQupyDvg6F"
@@ -43,7 +45,25 @@ const BuyTickets = ({ tickets, user, amount}) => {
 						ticketOwnerId: user.attributes.sub
 					}
 					const r = await API.graphql(graphqlOperation(updateTicket,{input}))
-					console.log(r)
+					(async () => {
+						try {
+							const res = await superagent
+							.post('http://3.82.4.223:3000/api/Ticket')
+							.send({
+								"$class": "org.example.basic.Ticket",
+								"ticketId": tickets[i].key,
+								"eventId": tickets[i].wizevent.id,
+								"category": tickets[i].category,
+								"seat": tickets[i].seat,
+								"value": tickets[i].value,
+								"ownerId":  user.attributes.sub
+							  })
+							  .set('X-API-Key', 'foobar')
+							  .set('accept', 'json')
+						} catch(err) {
+							console.error(err)
+						}
+					})
 				}
 				Notification({
 					title: "Success",
