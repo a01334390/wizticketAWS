@@ -28,7 +28,7 @@ const theme = {
   },
   button: {
     ...AmplifyTheme.button,
-    backgroundColor: "var(--amazonOrange)"
+    backgroundColor: "#c876ff"
   },
   sectionBody: {
     ...AmplifyTheme.sectionBody,
@@ -36,7 +36,7 @@ const theme = {
   },
   sectionHeader: {
     ...AmplifyTheme.sectionHeader,
-    backgroundColor: "var(--squidInk)"
+    backgroundColor: "#20115b"
   }
 }
 

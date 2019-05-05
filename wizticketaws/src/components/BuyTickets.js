@@ -6,12 +6,12 @@ import StripeCheckout from 'react-stripe-checkout'
 import { Notification, Message } from 'element-react'
 
 /** Update ticket owner's */
-import {updateTicket} from '../graphql/mutations'
+import { updateTicket } from '../graphql/mutations'
 
 /** AWS Stuff */
-import { API, graphqlOperation} from 'aws-amplify'
+import { API, graphqlOperation } from 'aws-amplify'
 
-import {history} from '../App'
+import { history } from '../App'
 
 const superagent = require('superagent')
 
@@ -20,8 +20,8 @@ const stripeConfig = {
 	publishableAPIKey: "pk_test_pUwXaYwXsdJM9MDQupyDvg6F"
 }
 
-const BuyTickets = ({ tickets, user, amount}) => {
-	
+const BuyTickets = ({ tickets, user, amount }) => {
+
 	const handleCharge = async token => {
 		console.log(tickets)
 		try {
@@ -30,7 +30,7 @@ const BuyTickets = ({ tickets, user, amount}) => {
 					token,
 					charge: {
 						currency: stripeConfig.currency,
-						amount: amount*100,
+						amount: amount * 100,
 						description: tickets.length + "x Tickets"
 					},
 					email: {
@@ -38,32 +38,30 @@ const BuyTickets = ({ tickets, user, amount}) => {
 					}
 				}
 			})
-			if(result.charge.status === "succeeded"){
-				for(var i = 0; i < tickets.length; i++){
+			if (result.charge.status === "succeeded") {
+				for (var i = 0; i < tickets.length; i++) {
 					var input = {
 						id: tickets[i].key,
 						ticketOwnerId: user.attributes.sub
 					}
-					const r = await API.graphql(graphqlOperation(updateTicket,{input}))
-					(async () => {
-						try {
-							const res = await superagent
-							.post('http://3.82.4.223:3000/api/Ticket')
-							.send({
-								"$class": "org.example.basic.Ticket",
-								"ticketId": tickets[i].key,
-								"eventId": tickets[i].wizevent.id,
-								"category": tickets[i].category,
-								"seat": tickets[i].seat,
-								"value": tickets[i].value,
-								"ownerId":  user.attributes.sub
-							  })
-							  .set('X-API-Key', 'foobar')
-							  .set('accept', 'json')
-						} catch(err) {
-							console.error(err)
-						}
-					})
+					const r = await API.graphql(graphqlOperation(updateTicket, { input }))
+					// superagent
+					// 	.post('http://3.82.4.223:3000/api/Ticket')
+					// 	.send({
+					// 		"$class": "org.example.basic.Ticket",
+					// 		"ticketId": r.data.updateTicket.id,
+					// 		"eventId": r.data.updateTicket.wizevent.id,
+					// 		"category": r.data.updateTicket.category,
+					// 		"seat": parseInt(r.data.updateTicket.seat),
+					// 		"value": parseFloat(r.data.updateTicket.value),
+					// 		"ownerId": r.data.updateTicket.owner.id
+					// 	})
+					// 	.set('X-API-Key', 'foobar')
+					// 	.set('accept', 'json')
+					// 	.end((err, res) => {
+					// 		if (err) { console.log(err) }
+					// 		console.log(res)
+					// 	})
 				}
 				Notification({
 					title: "Success",
@@ -71,7 +69,7 @@ const BuyTickets = ({ tickets, user, amount}) => {
 					type: "success",
 					duration: 3000
 				})
-				setTimeout(()=>{
+				setTimeout(() => {
 					history.push('/')
 					Message({
 						type: 'info',
@@ -79,7 +77,7 @@ const BuyTickets = ({ tickets, user, amount}) => {
 						duration: 5000,
 						showClose: true
 					})
-				},3000)
+				}, 3000)
 			}
 			console.log({ result })
 		} catch (err) {
@@ -88,7 +86,7 @@ const BuyTickets = ({ tickets, user, amount}) => {
 				message: "Couldn't process your payment, please try again",
 				type: "error"
 			})
-			console.log({err})
+			console.log({ err })
 		}
 	}
 
@@ -99,7 +97,7 @@ const BuyTickets = ({ tickets, user, amount}) => {
 			stripeKey={stripeConfig.publishableAPIKey}
 			email={user.attributes.email}
 			name={tickets.length + "x Tickets"}
-			amount={amount*100}
+			amount={amount * 100}
 			shippingAddress={false}
 			billingAddress={false}
 			locale="auto"

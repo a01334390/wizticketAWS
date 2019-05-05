@@ -81,7 +81,7 @@ body {
 .app-title {
   font-weight: 300;
   font-size: 1.5rem;
-  color: #f90;
+  color: white;
   margin: -3px;
 }
 
@@ -94,6 +94,7 @@ body {
 .app-user {
   font-weight: 300;
   font-size: 1rem;
+  color: #f4f8fb !important;
 }
 
 .text-center {
@@ -133,6 +134,65 @@ body {
   }
 }
 
+.el-button:hover{
+  color: #7232f2 !important;
+  border-color: #7232f2 !important;
+}
+
+.el-button.is-disabled, .el-button.is-disabled:focus, .el-button.is-disabled:hover{
+  color: #bfcbd9 !important;
+  cursor: not-allowed !important;
+  background-image: none !important;
+  background-color: #eef1f6 !important;
+  border-color: #d1dbe5 !important;
+}
+
+.el-icon-arrow-left{
+ color: #bfcbd9 !important;
+}
+.el-icon-arrow-right{
+  color: #bfcbd9 !important;
+ }
+
+.el-button--primary{
+  color: white !important;
+  background-color: #7232f2 !important;
+  border-color: #7232f2 !important;
+}
+
+.el-button--success {
+  color: #010108 !important;
+  background-color: #f6b3e5 !important;
+  border-color: #f6b3e5 !important;
+}
+
+.el-button--success:hover {
+  color: #010108 !important;
+  background-color: #c876ff !important;
+  border-color: #c876ff !important;
+}
+
+.el-icon-edit:before {
+  color: #7232f2;
+}
+.el-tabs__item.is-active{
+  color: #7232f2 !important;
+}
+
+[class*=" el-icon-"], [class^=el-icon-]{
+  color: #7232f2;
+}
+.el-button--warning{
+  color: #34314f !important;
+  background-color: #c876ff !important;
+  border-color:  #c876ff !important;
+}
+
+.el-button--info{
+  color: #34314f !important;
+  background-color: #c876ff !important;
+  border-color:  #c876ff !important;
+}
 /* push items in navbar to opposite ends if screen width > 520px */
 @media (min-width: 520px) {
   .nav-container {
@@ -150,10 +210,12 @@ body {
 .nav-container {
   display: flex;
   flex-wrap: wrap;
+  background-color: #0d0820;
 }
 
 .nav-link {
   text-decoration: none;
+  color: #f4f8fb !important;
 }
 
 .profile-tabs > * {
@@ -178,7 +240,7 @@ body {
 }
 
 .header {
-  color: var(--color-purple);
+  color:#20115b;
   font-size: 1.2rem;
   padding: 5px 10px;
   font-weight: 600;
@@ -198,9 +260,9 @@ body {
 .market-title {
   font-weight: 300;
   border-radius: 10px;
-  text-decoration: #f90 solid underline;
+  text-decoration: #20115b solid underline;
   text-underline-position: under;
-  text-decoration-style: wavy;
+  text-decoration-style: solid;
   font-size: 2.5rem;
   display: flex;
   color: var(--lightSquidInk);
@@ -269,6 +331,7 @@ body {
 .large-icon {
   height: 30px;
   margin-right: 2px;
+  color: #20115b !important;
 }
 
 .product-list {

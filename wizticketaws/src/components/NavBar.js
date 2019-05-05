@@ -1,6 +1,8 @@
 import React from "react";
 import { Menu as Nav, Icon, Button } from "element-react";
 import { NavLink } from "react-router-dom";
+import logo from "../logo.png"
+
 
 const Navbar = ({ user, handleSignout }) => (
 	<Nav mode="horizontal" theme="dark" defaultActive="1">
@@ -10,7 +12,7 @@ const Navbar = ({ user, handleSignout }) => (
 		  <NavLink to="/" className="nav-link">
 			<span className="app-title">
 			  <img
-				src="https://icon.now.sh/account_balance/f90"
+				src="../logo.png"
 				alt="App Icon"
 				className="app-icon"
 			  />

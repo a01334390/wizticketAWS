@@ -45,7 +45,7 @@ const PlaceList = ({searchResults}) => {
 						</h2>
 					): (
 					<h2 className="header">
-						<img src="https://icon.now.sh/store_mall_directory/527FFF"
+						<img src="https://icon.now.sh/store_mall_directory/7232f2"
 							alt="Store Icon"
 							className="large-icon">
 						</img>
@@ -67,7 +67,7 @@ const PlaceList = ({searchResults}) => {
 											<span style={{ color: 'var(--darkAmazonOrange)' }}>
 												{place.wizevents.length}
 											</span>
-											<img src="https://icon.now.sh/musicNote/f60" alt="Check Now" />
+											<img src="https://icon.now.sh/musicNote/7232f2" alt="Check Now" />
 										</span>
 										<div style={{color: "var(--lightSquidInk)"}}>
 											<b>Owner</b> {place.owner || "System Defined"}
